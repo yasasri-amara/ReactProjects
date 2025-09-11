@@ -1,0 +1,17 @@
+html,body,#root{
+  margin:0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 100%;
+  height: 100%;
+}
+.login .leftpanel h1{
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+.login .leftpanel p{
+    font-size: 24px;
+}
+.login .rightpanel p span{
+    color: dodgerblue;
+    cursor: pointer;
+}
