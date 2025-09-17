@@ -1,22 +1,142 @@
-import React, { Component } from 'react'
-import './css/Login.css'
-export default class Login extends Component {
-  render() {
-    return (
-      <div className='login'>
-      <div className='leftpanel'>
-        <h2>Welcome to S201 ERP Project</h2>
-        <p>Check all the ERP Options here</p>
-      </div>
-      <div className='rightpanel'>
-        <div className='card'> 
-            <input type='name' placeholder='Enter the username'></input>
-            <input type='password' placeholder='Enter the password'></input>
-            <button>Login</button>
-            <p>Don't have an account?<span>Sign up</span></p>
-        </div>
-      </div>
-      </div>
-    )
-  }
+import React, { Component } from 'react';
+import './css/Login.css';
+class Login extends Component {
+    constructor(){
+        super();
+        this.state = {signup:false, signupData:{
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            password: "",
+            confirmPassword: ""
+        }, errData: ""};
+    }
+
+    handleSignUpInput(e){
+        this.setState({signupData:{
+            ...this.state.signupData, [e.target.name]:e.target.value
+        }});
+    }
+
+    validateSignup(){
+        const {signupData} = this.state;
+        const err = {};
+        if(!signupData.firstName.trim()) err.firstName = "First Name is required";
+        if(!signupData.lastName.trim()) err.lastName = "Last Name is required";
+        if(!signupData.email.trim()) err.email = "Email ID is required";
+        if(!signupData.phone.trim()) err.phone = "Phone Number is required";
+        if(signupData.password.length < 8) err.password = "Password must have 8 chars";
+        if(signupData.confirmPassword !== signupData.password) err.confirmPassword = "Password does not match";
+        
+        this.setState({errData: err});
+        return Object.keys(err).length === 0;
+    }
+
+    registerUser(){
+        if(!this.validateSignup())
+            return;
+
+        alert("Registered Successfully...");
+    }
+
+    render() {
+        const{signup, signupData, errData} = this.state;
+        return (
+            <div className='login'>
+                <div className='leftpanel'>
+                    <h1>Welcome Back!</h1>
+                    <p>Access and manage your task efficiently</p>
+                </div>
+                <div className='rightpanel'>
+                    <div className='card'>
+                        <h2>Login</h2>
+                        <input type='text' placeholder='Email' />
+                        <input type='password' placeholder='Password' />
+                        <button>Login</button>
+                        <p>Don't have an account? <span onClick={()=>this.setState({signup:true})}>Sign Up</span></p>
+                    </div>
+                </div>
+
+                {signup && 
+                    <div className='overlay'>
+                        <div className='signup'>
+                            <button className='close' onClick={()=>this.setState({signup:false})}>X</button>
+                            <h2>Create an account</h2>
+                            <label>First Name *</label>
+                            <input type='text' placeholder='First Name' name='firstName' value={signupData.firstName} onChange={(e)=>this.handleSignUpInput(e)} autoComplete='off' style={(!errData.firstName ? {} : {"border" : "1px solid red"})} />
+                            <label>Last Name *</label>
+                            <input type='text' placeholder='Last Name' name='lastName' value={signupData.lastName} onChange={(e)=>this.handleSignUpInput(e)} autoComplete='off' style={(!errData.lastName ? {} : {"border" : "1px solid red"})} />
+                            <label>Email ID *</label>
+                            <input type='text' placeholder='Email ID' name='email' value={signupData.email} onChange={(e)=>this.handleSignUpInput(e)} autoComplete='off' style={(!errData.email ? {} : {"border" : "1px solid red"})} />
+                            <label>Phone Number *</label>
+                            <input type='text' placeholder='Phone Number' name='phone' value={signupData.phone} onChange={(e)=>this.handleSignUpInput(e)} autoComplete='off' style={(!errData.phone ? {} : {"border" : "1px solid red"})} />
+                            <label>Password *</label>
+                            <input type='password' placeholder='Password' name='password' value={signupData.password} onChange={(e)=>this.handleSignUpInput(e)} style={(!errData.password ? {} : {"border" : "1px solid red"})} />
+                            <label>Confirm Password *</label>
+                            <input type='password' placeholder='Confirm Password' name='confirmPassword' value={signupData.confirmPassword} onChange={(e)=>this.handleSignUpInput(e)} style={(!errData.confirmPassword ? {} : {"border" : "1px solid red"})} />
+                            <button className='regButton' onClick={()=>this.registerUser()}>Register</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        );
+    }
 }
+
+export default Login;
+// import React, { Component } from 'react'
+// import './css/Login.css'
+
+// export default class Login extends Component {
+//   constructor(){
+//     super();
+//     this.state={signup:false,signupData:{
+//       firstName:"",
+//       lastName:"",
+//       email:"",
+//       phone:"",
+//       password:"",
+//       confirmpassword:"",
+//     },errData:""};
+    
+//   }
+//   render() {
+//     return (
+//       <div className='login'>
+//         <div className='leftPanel'>
+//             <h2> Welcome to S201 ERP Project</h2>
+
+//             <p>Check all the ERP Options here</p>
+
+        
+//       </div>
+//       <div className='rightPanel'>
+//         <div className='card'>
+        
+//             <input type='text' placeholder='Enter the email'></input>
+//             <input type='password'placeholder='Enter the Password'></input>
+//             <button>Login</button>
+//             <p>Don't have an account? <span>Sign up</span></p>
+//         </div>
+// </div>
+// <div className='overlay'>
+//           <div className='signup'>
+//             <label>FirstName</label>
+//             <input type='text' placeholder='Enter the first name'name='FirstName'/>
+//              <label>LastName</label>
+//             <input type='text' placeholder='Enter the last name'name='LastName'/>
+//             <label>email</label>
+//             <input type='email' placeholder='Enter the email'name='email'/>
+//             <label>Phone</label>
+//             <input type='number' placeholder='Enter the Phone'name='Phone'/>
+//             <label>password</label>
+//             <input type='number' placeholder='Enter the password'name='password'/>
+//             <label>confirmPassword</label>
+//             <input type='number' placeholder='Enter the confirmPassword'name='confirmPassword'/>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
